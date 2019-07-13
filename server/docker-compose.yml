@@ -1,0 +1,136 @@
+# Copyright 2019 TeamTalk Remix Team
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+version: "2.2"
+x-global-values:
+  teamtalk-image: &teamtalk-image ${TTN_IMAGE_PREFIX:-docker.io/rayson/}teamtalk-ng:latest
+  teamtalk-dashboard-image: &teamtalk-dashboard-image ${TTN_IMAGE_PREFIX:-docker.io/rayson/}teamtalk-ng-dashboard:latest
+x-teamtalk-service-template: &teamtalk-service-template
+  image: *teamtalk-image
+  build:
+    context: ../
+    dockerfile: server/containers/teamtalk-ng/Dockerfile
+  working_dir: /var/local/teamtalk-ng
+  user: "1000:0" #TODO: should be able to run as non-root
+services:
+  redis:
+    # usage: https://hub.docker.com/r/centos/redis-32-centos7
+    image: docker.io/centos/redis-32-centos7:latest
+    user: "1001:0"
+    environment:
+      REDIS_PASSWORD:
+    volumes:
+    - redis-data:/var/lib/redis/data:rw
+    ports:
+    - 6379/tcp
+  db:
+    # usage: https://hub.docker.com/r/centos/mariadb-102-centos7
+    image: docker.io/centos/mariadb-102-centos7:latest
+    user: "1001:0"
+    environment:
+      MYSQL_USER: teamtalk
+      MYSQL_PASSWORD: changeme
+      MYSQL_DATABASE: teamtalk
+    volumes:
+    - mysql-data:/var/lib/mysql/data:rw
+    - ./db:/vol/db:rw
+    ports:
+    - 3306/tcp
+  db-proxy:
+    <<: *teamtalk-service-template
+    command: db_proxy_server
+    ports:
+    - 10600/tcp
+    volumes:
+    - ./conf/dbproxyserver.conf:/var/local/teamtalk-ng/dbproxyserver.conf:ro
+    - ./conf/log4cxx.properties:/var/local/teamtalk-ng/log4cxx.properties:ro
+  login:
+    <<: *teamtalk-service-template
+    command: login_server
+    ports:
+    - 8008/tcp # for client
+    - 8100/tcp # for msg_server
+    - 8080:8080/tcp # for http
+    volumes:
+    - ./conf/loginserver.conf:/var/local/teamtalk-ng/loginserver.conf:ro
+    - ./conf/log4cxx.properties:/var/local/teamtalk-ng/log4cxx.properties:ro
+  msg:
+    <<: *teamtalk-service-template
+    command: msg_server
+    ports:
+    - 8000:8000/tcp
+    volumes:
+    - ./conf/msgserver.conf:/var/local/teamtalk-ng/msgserver.conf:ro
+    - ./conf/log4cxx.properties:/var/local/teamtalk-ng/log4cxx.properties:ro
+  route:
+    <<: *teamtalk-service-template
+    command: route_server
+    ports:
+    - 8200/tcp
+    volumes:
+    - ./conf/routeserver.conf:/var/local/teamtalk-ng/routeserver.conf:ro
+    - ./conf/log4cxx.properties:/var/local/teamtalk-ng/log4cxx.properties:ro
+  http-msg:
+    <<: *teamtalk-service-template
+    command: http_msg_server
+    ports:
+    - 8400:8400/tcp
+    volumes:
+    - ./conf/httpmsgserver.conf:/var/local/teamtalk-ng/httpmsgserver.conf:ro
+    - ./conf/log4cxx.properties:/var/local/teamtalk-ng/log4cxx.properties:ro
+  file:
+    <<: *teamtalk-service-template
+    command: file_server
+    ports:
+    - 8600:8600/tcp
+    - 8601/tcp
+    volumes:
+    - ./conf/fileserver.conf:/var/local/teamtalk-ng/fileserver.conf:ro
+    - ./conf/log4cxx.properties:/var/local/teamtalk-ng/log4cxx.properties:ro
+  msfs:
+    <<: *teamtalk-service-template
+    command: msfs
+    ports:
+    - 8700:8700/tcp
+    volumes:
+    - ./conf/msfs.conf:/var/local/teamtalk-ng/msfs.conf:ro
+    - ./conf/log4cxx.properties:/var/local/teamtalk-ng/log4cxx.properties:ro
+    - msfs-data:/var/lib/teamtalk-ng/msfs:rw
+  # push server is not well supported yet, disabled by default
+  push:
+    <<: *teamtalk-service-template
+    scale: 0 # old docker-compose versions ignore this option
+    command: push_server
+    ports:
+    - 8500/tcp
+    volumes:
+    - ./conf/pushserver.conf:/var/local/teamtalk-ng/pushserver.conf:ro
+    - ./conf/log4cxx.properties:/var/local/teamtalk-ng/log4cxx.properties:ro
+  dashboard:
+    image: *teamtalk-dashboard-image
+    build:
+      context: ..
+      dockerfile: server/containers/teamtalk-ng-dashboard/Dockerfile
+    user: "1000:0"
+    ports:
+    - 10080:8080/tcp
+    volumes:
+    - ./conf/config.php:/var/www/html/application/config/config.php:ro
+    - ./conf/database.php:/var/www/html/application/config/database.php:ro
+    - ./conf/im.conf:/etc/httpd/conf.d/im.conf:rw
+
+volumes:
+  redis-data:
+  mysql-data:
+  msfs-data:
