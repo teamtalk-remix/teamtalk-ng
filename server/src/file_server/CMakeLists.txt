@@ -1,28 +1,12 @@
-cmake_minimum_required(VERSION 2.6)
-PROJECT(fileserver)
+cmake_minimum_required(VERSION 3.12)
+PROJECT(fileserver LANGUAGES CXX)
 
 AUX_SOURCE_DIRECTORY(./ SRC_LIST1)
-AUX_SOURCE_DIRECTORY(../base/pb/protocol SRC_LIST2)
 
-#SET(LIBRARY_OUTPUT_PATH ./)
-SET(EXECUTABLE_OUTPUT_PATH  ./)
-if(APPLE)
-    SET(PB_LIB_DIR ../base/pb/lib/mac)
-elseif(UNIX)
-    SET(PB_LIB_DIR ../base/pb/lib/linux)
-endif()
-
-
-ADD_DEFINITIONS( -g -W -Wall -D_REENTRANT -D_FILE_OFFSET_BITS=64 -DAC_HAS_INFO
--DAC_HAS_WARNING -DAC_HAS_ERROR -DAC_HAS_CRITICAL -DTIXML_USE_STL
--DAC_HAS_DEBUG -DLINUX_DAEMON -std=c++11)
-
-INCLUDE_DIRECTORIES(./ ../ ../base ../base/pb/protocol ../base/pb/)
-LINK_DIRECTORIES(./ ../base ${PB_LIB_DIR} ../base/slog/lib)
-
-#ADD_XXXX必须在TARGET_LINK_LIBRARIES前面，否则会报错
-#ADD_LIBRARY(${PROJECTNAME} SHARED/STATIC ${SRC_LIST})
-ADD_EXECUTABLE(file_server ${SRC_LIST1} ${SRC_LIST2})
-
-TARGET_LINK_LIBRARIES(file_server pthread base protobuf-lite uuid slog)
- 
+ADD_EXECUTABLE(file_server ${SRC_LIST1})
+target_compile_features(file_server PRIVATE cxx_std_11)
+target_compile_definitions(file_server PRIVATE -D_REENTRANT -D_FILE_OFFSET_BITS=64 -DAC_HAS_INFO
+    -DAC_HAS_WARNING -DAC_HAS_ERROR -DAC_HAS_CRITICAL -DTIXML_USE_STL
+    -DAC_HAS_DEBUG -DLINUX_DAEMON)
+target_include_directories(file_server PRIVATE ../ ../base ../base/pb/protocol)
+TARGET_LINK_LIBRARIES(file_server PRIVATE pthread base protobuf-lite uuid slog)

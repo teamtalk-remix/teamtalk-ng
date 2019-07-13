@@ -9,7 +9,7 @@
 *
 ================================================================*/
 #include "SessionModel.h"
-#include "DBPool.h"
+#include "../DBPool.h"
 #include "MessageModel.h"
 #include "GroupMessageModel.h"
 
@@ -232,19 +232,3 @@ void CSessionModel::fillSessionMsg(uint32_t nUserId, list<IM::BaseDefine::Contac
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

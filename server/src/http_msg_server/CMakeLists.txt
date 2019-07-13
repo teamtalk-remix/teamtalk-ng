@@ -1,27 +1,16 @@
-cmake_minimum_required(VERSION 2.6)
-PROJECT(http_msg_server)
+cmake_minimum_required(VERSION 3.12)
+project(http_msg_server LANGUAGES CXX)
 
 AUX_SOURCE_DIRECTORY(./ SRC_LIST)
 
-#SET(LIBRARY_OUTPUT_PATH ./)
-SET(EXECUTABLE_OUTPUT_PATH  ./)
-if(APPLE)
-    SET(PB_LIB_DIR ../base/pb/lib/mac)
-elseif(UNIX)
-    SET(PB_LIB_DIR ../base/pb/lib/linux)
-endif()
+find_package(jsoncpp CONFIG REQUIRED)
+get_target_property(jsoncpp_INCLUDE_DIR jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
 
-ADD_DEFINITIONS( -g -W -Wall -D_REENTRANT -D_FILE_OFFSET_BITS=64 -DAC_HAS_INFO
--DAC_HAS_WARNING -DAC_HAS_ERROR -DAC_HAS_CRITICAL -DTIXML_USE_STL
--DAC_HAS_DEBUG -DLINUX_DAEMON -std=c++11)
-
-INCLUDE_DIRECTORIES(./  ../base ../base/jsoncpp ../base/pb/protocol
-../base/pb/)
-LINK_DIRECTORIES(./ ../base ${PB_LIB_DIR} ../base/slog/lib )
-
-#ADD_XXXX必须在TARGET_LINK_LIBRARIES前面，否则会报错
-#ADD_LIBRARY(${PROJECTNAME} SHARED/STATIC ${SRC_LIST})
 ADD_EXECUTABLE(http_msg_server ${SRC_LIST})
-
-TARGET_LINK_LIBRARIES(http_msg_server base protobuf-lite slog  pthread) 
- 
+target_compile_features(http_msg_server PRIVATE cxx_std_11)
+target_compile_definitions(http_msg_server PRIVATE -D_REENTRANT -D_FILE_OFFSET_BITS=64 -DAC_HAS_INFO
+    -DAC_HAS_WARNING -DAC_HAS_ERROR -DAC_HAS_CRITICAL -DTIXML_USE_STL
+    -DAC_HAS_DEBUG -DLINUX_DAEMON)
+target_include_directories(http_msg_server PRIVATE .. ../base ../base/pb/protocol
+    ${jsoncpp_INCLUDE_DIR} ${jsoncpp_INCLUDE_DIR}/jsoncpp)
+target_link_libraries(http_msg_server base protobuf-lite slog jsoncpp pthread)

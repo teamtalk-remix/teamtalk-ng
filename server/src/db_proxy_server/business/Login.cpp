@@ -11,7 +11,7 @@
 
 #include <list>
 #include "../ProxyConn.h"
-#include "../HttpClient.h"
+#include "HttpClient.h"
 #include "../SyncCenter.h"
 #include "Login.h"
 #include "UserModel.h"
@@ -148,4 +148,3 @@ void doLogin(CImPdu* pPdu, uint32_t conn_uuid)
 }
 
 };
-

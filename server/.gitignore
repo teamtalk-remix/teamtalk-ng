@@ -1,0 +1,6 @@
+# protobuf generated files
+*.pb.cc
+*.pb.h
+
+# CMake generated files
+/src/base/version.h
