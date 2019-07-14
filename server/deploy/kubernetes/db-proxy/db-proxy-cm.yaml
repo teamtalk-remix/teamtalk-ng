@@ -1,0 +1,90 @@
+# Copyright 2019 TeamTalk Remix Team
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: teamtalk-ng-db-proxy
+  labels:
+    app: teamtalk-ng
+    component: db-proxy
+data:
+  dbproxyserver.conf: |
+    ListenIP=0.0.0.0
+    ListenPort=10600
+    ThreadNum=48		# double the number of CPU core
+    MsfsSite=teamtalk-ng-msfs
+
+    #configure for mysql
+    DBInstances=teamtalk_master,teamtalk_slave
+    #teamtalk_master
+    teamtalk_master_host=teamtalk-ng-db
+    teamtalk_master_port=3306
+    teamtalk_master_dbname=teamtalk
+    teamtalk_master_username=teamtalk
+    teamtalk_master_password=changeme
+    teamtalk_master_maxconncnt=16
+
+    #teamtalk_slave
+    teamtalk_slave_host=teamtalk-ng-db
+    teamtalk_slave_port=3306
+    teamtalk_slave_dbname=teamtalk
+    teamtalk_slave_username=teamtalk
+    teamtalk_slave_password=changeme
+    teamtalk_slave_maxconncnt=16
+
+    #configure for unread
+    CacheInstances=unread,group_set,token,sync,group_member
+    #未读消息计数器的redis
+    unread_host=teamtalk-ng-redis
+    unread_port=6379
+    unread_db=1
+    unread_maxconncnt=16
+
+    #群组设置redis
+    group_set_host=teamtalk-ng-redis
+    group_set_port=6379
+    group_set_db=2
+    group_set_maxconncnt=16
+
+    #同步控制
+    sync_host=teamtalk-ng-redis
+    sync_port=6379
+    sync_db=3
+    sync_maxconncnt=1
+
+    #deviceToken redis
+    token_host=teamtalk-ng-redis
+    token_port=6379
+    token_db=4
+    token_maxconncnt=16
+
+    #GroupMember
+    group_member_host=teamtalk-ng-redis
+    group_member_port=6379
+    group_member_db=5
+    group_member_maxconncnt=48
+
+    #AES 密钥
+    aesKey=12345678901234567890123456789012
+
+  log4cxx.properties: |
+    log4j.rootLogger=DEBUG, stderr
+    log4j.additivity.org.apache=false
+    log4j.appender.stderr = org.apache.log4j.ConsoleAppender
+    log4j.appender.stderr.Threshold = INFO
+    log4j.appender.stderr.Target   = System.err
+    log4j.appender.stderr.layout = org.apache.log4j.PatternLayout
+    log4j.appender.stderr.layout.ConversionPattern = %d [%-5p %.16c] - %m%n
+    log4j.logger.test=DEBUG, stderr

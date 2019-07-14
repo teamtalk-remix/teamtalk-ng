@@ -1,0 +1,66 @@
+# Copyright 2019 TeamTalk Remix Team
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: teamtalk-ng-msg
+  labels:
+    app: teamtalk-ng
+    component: msg
+data:
+  msgserver.conf: |
+    ListenIP=0.0.0.0
+    ListenPort=8000
+
+    ConcurrentDBConnCnt=2
+    DBServerIP1=teamtalk-ng-db-proxy
+    DBServerPort1=10600
+    DBServerIP2=teamtalk-ng-db-proxy
+    DBServerPort2=10600
+
+    LoginServerIP1=teamtalk-ng-login
+    LoginServerPort1=8100
+    #LoginServerIP2=localhost
+    #LoginServerPort2=8101
+
+    RouteServerIP1=teamtalk-ng-route
+    RouteServerPort1=8200
+    #RouteServerIP2=localhost
+    #RouteServerPort2=8201
+
+    #PushServerIP1=push
+    #PushServerPort1=8500
+
+    FileServerIP1=teamtalk-ng-file
+    FileServerPort1=8600
+    #FileServerIP2=localhost
+    #FileServerPort2=8601
+
+    IpAddr1=127.0.0.1
+    IpAddr2=127.0.0.1
+    MaxConnCnt=100000
+
+    #AES 密钥
+    aesKey=12345678901234567890123456789012
+
+  log4cxx.properties: |
+    log4j.rootLogger=DEBUG, stderr
+    log4j.additivity.org.apache=false
+    log4j.appender.stderr = org.apache.log4j.ConsoleAppender
+    log4j.appender.stderr.Threshold = INFO
+    log4j.appender.stderr.Target   = System.err
+    log4j.appender.stderr.layout = org.apache.log4j.PatternLayout
+    log4j.appender.stderr.layout.ConversionPattern = %d [%-5p %.16c] - %m%n
+    log4j.logger.test=DEBUG, stderr
