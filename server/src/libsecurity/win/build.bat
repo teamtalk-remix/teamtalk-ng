@@ -6,6 +6,5 @@ if "%command%" == "clean" (
     rm -rf CMakeCache.txt
     rm -rf cmake_install.cmake
     rm -rf libsecurity.a
-    )
-else ( cmake ../src )
+    ) else ( cmake -G "Visual Studio 16 2019" -A Win32 ../src )
 

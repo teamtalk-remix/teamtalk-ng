@@ -227,7 +227,7 @@ void FileManager::updateMapCache() {
 	size_t currSize = m_map.size();
 	if (currSize > MAX_FILE_IN_MAP) {
 		EntryMap::iterator it = m_map.begin();
-		int times = abs(MAX_FILE_IN_MAP - currSize);
+		int times = currSize - MAX_FILE_IN_MAP;
 		while (it != m_map.end() && times) {
 			delete it->second;
 			m_map.erase(it++);
@@ -285,4 +285,3 @@ void FileManager::releaseFileCache(const std::string& url) {
 }
 
 }
-

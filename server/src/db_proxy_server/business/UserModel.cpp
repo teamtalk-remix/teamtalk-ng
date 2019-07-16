@@ -12,7 +12,7 @@
 #include "../DBPool.h"
 #include "../CachePool.h"
 #include "Common.h"
-#include "SyncCenter.h"
+#include "../SyncCenter.h"
 
 
 CUserModel* CUserModel::m_pInstance = NULL;
@@ -433,4 +433,3 @@ bool CUserModel::getPushShield(uint32_t user_id, uint32_t* shield_status) {
     
     return rv;
 }
-

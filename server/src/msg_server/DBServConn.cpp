@@ -13,7 +13,6 @@
 #include "FileHandler.h"
 #include "PushServConn.h"
 #include "ImUser.h"
-#include "security.h"
 #include "AttachData.h"
 #include "jsonxx.h"
 #include "IM.Other.pb.h"
