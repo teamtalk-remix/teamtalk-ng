@@ -189,15 +189,19 @@ void replace_mark(string& str, uint32_t new_value, uint32_t& begin_pos)
 }
 
 
-void writePid()
+void writePid(const string pidPath)
 {
+    if (pidPath.empty()) {
+        // nop when pidPath is not specified
+        return;
+    }
 	uint32_t curPid;
 #ifdef _WIN32
 	curPid = (uint32_t) GetCurrentProcess();
 #else
 	curPid = (uint32_t) getpid();
 #endif
-    FILE* f = fopen("server.pid", "w");
+    FILE* f = fopen(pidPath.c_str(), "w");
     assert(f);
     char szPid[32];
     snprintf(szPid, sizeof(szPid), "%d", curPid);

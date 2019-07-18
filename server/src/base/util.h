@@ -81,7 +81,7 @@ uint32_t string2int(const string& value);
 void replace_mark(string& str, string& new_value, uint32_t& begin_pos);
 void replace_mark(string& str, uint32_t new_value, uint32_t& begin_pos);
 
-void writePid();
+void writePid(const string pidPath = string());
 inline unsigned char toHex(const unsigned char &x);
 inline unsigned char fromHex(const unsigned char &x);
 string URLEncode(const string &sIn);

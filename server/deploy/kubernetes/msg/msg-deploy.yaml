@@ -1,0 +1,54 @@
+# Copyright 2019 TeamTalk Remix Team
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: teamtalk-ng-msg
+  labels:
+    app: teamtalk-ng
+    component: msg
+spec:
+  selector:
+    matchLabels:
+      app: teamtalk-ng
+      component: msg
+  template:
+    metadata:
+      labels:
+        app: teamtalk-ng
+        component: msg
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+      - name: msg
+        image: docker.io/rayson/teamtalk-ng:latest
+        args:
+        - msg_server
+        workingDir: /var/local/teamtalk-ng
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8000
+          name: msg
+        volumeMounts:
+        - name: teamtalk-ng-msg-cm
+          mountPath: /var/local/teamtalk-ng
+      volumes:
+      - name: teamtalk-ng-msg-cm
+        configMap:
+          name: teamtalk-ng-msg

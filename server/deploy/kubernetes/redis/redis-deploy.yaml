@@ -1,0 +1,55 @@
+# Copyright 2019 TeamTalk Remix Team
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: teamtalk-ng-redis
+  labels:
+    app: teamtalk-ng
+    component: redis
+spec:
+  selector:
+    matchLabels:
+      app: teamtalk-ng
+      component: redis
+  template:
+    metadata:
+      labels:
+        app: teamtalk-ng
+        component: redis
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        fsGroup: 0
+      containers:
+      - name: redis
+        image: docker.io/centos/redis-32-centos7:latest
+        envFrom:
+          - secretRef:
+              name: teamtalk-ng-redis
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 6379
+          name: redis
+        volumeMounts:
+        - name: teamtalk-ng-redis-data
+          mountPath: /var/lib/redis/data
+      volumes:
+      - name: teamtalk-ng-redis-data
+        persistentVolumeClaim:
+          claimName: teamtalk-ng-redis-data
