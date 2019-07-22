@@ -1,0 +1,474 @@
+# Copyright 2019 TeamTalk Remix Team
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: teamtalk-ng-db-ttopen
+  labels:
+    app: teamtalk-ng
+    component: db
+data: 
+  ttopen.sql: "# ************************************************************\n\
+      # Sequel Pro SQL dump\n\
+      # Version 4096\n\
+      #\n\
+      # http://www.sequelpro.com/\n\
+      # http://code.google.com/p/sequel-pro/\n\
+      #\n\
+      # Host: 10.11.2.38 (MySQL 5.6.16-64.2-56-log)\n\
+      # Database: ttopen\n\
+      # Generation Time: 2015-03-24 09:32:39 +0000\n\
+      # ************************************************************\n\n\n\
+      # Dump of table IMAdmin\n\
+      # ------------------------------------------------------------\n\n\
+      DROP DATABASE IF EXISTS teamtalk;\n\
+      CREATE DATABASE teamtalk DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;\n\
+      USE teamtalk;\n\n\n\
+      DROP TABLE IF EXISTS `IMAdmin`;\n\n\
+      CREATE TABLE `IMAdmin` (\n\
+      \x20 `id` mediumint(6) unsigned NOT NULL AUTO_INCREMENT,\n\
+      \x20 `uname` varchar(40) NOT NULL COMMENT '用户名',\n\
+      \x20 `pwd` char(32) NOT NULL COMMENT '密码',\n\
+      \x20 `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '用户状态 0 :正常 1:删除 可扩展',\n\
+      \x20 `created` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间´',\n\
+      \x20 `updated` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间´',\n\
+      \x20 PRIMARY KEY (`id`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8;\n\n\
+      LOCK TABLES `IMAdmin` WRITE;\n\
+      /*!40000 ALTER TABLE `IMAdmin` DISABLE KEYS */;\n\n\
+      INSERT INTO `IMAdmin` (`id`, `uname`, `pwd`, `status`, `created`, `updated`)\n\
+      VALUES\n\
+      \t(1,'admin','21232f297a57a5a743894a0e4a801fc3',0,0,0);\n\n\
+      /*!40000 ALTER TABLE `IMAdmin` ENABLE KEYS */;\n\
+      UNLOCK TABLES;\n\n\n\
+      # Dump of table IMAudio\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMAudio`;\n\n\
+      CREATE TABLE `IMAudio` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `fromId` int(11) unsigned NOT NULL COMMENT '发送者Id',\n\
+      \x20 `toId` int(11) unsigned NOT NULL COMMENT '接收者Id',\n\
+      \x20 `path` varchar(255) COLLATE utf8mb4_bin DEFAULT '' COMMENT '语音存储的地址',\n\
+      \x20 `size` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '文件大小',\n\
+      \x20 `duration` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '语音时长',\n\
+      \x20 `created` int(11) unsigned NOT NULL COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_fromId_toId` (`fromId`,`toId`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;\n\n\n\
+      # Dump of table IMDepart\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMDepart`;\n\n\
+      CREATE TABLE `IMDepart` (\n\
+      \x20 `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '部门id',\n\
+      \x20 `departName` varchar(64) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '部门名称',\n\
+      \x20 `priority` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '显示优先级',\n\
+      \x20 `parentId` int(11) unsigned NOT NULL COMMENT '上级部门id',\n\
+      \x20 `status` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '状态',\n\
+      \x20 `created` int(11) unsigned NOT NULL COMMENT '创建时间',\n\
+      \x20 `updated` int(11) unsigned NOT NULL COMMENT '更新时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_departName` (`departName`),\n\
+      \x20 KEY `idx_priority_status` (`priority`,`status`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;\n\n\n\n\
+      # Dump of table IMDiscovery\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMDiscovery`;\n\n\
+      CREATE TABLE `IMDiscovery` (\n\
+      \x20 `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',\n\
+      \x20 `itemName` varchar(64) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '名称',\n\
+      \x20 `itemUrl` varchar(64) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT 'URL',\n\
+      \x20 `itemPriority` int(11) unsigned NOT NULL COMMENT '显示优先级',\n\
+      \x20 `status` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '状态',\n\
+      \x20 `created` int(11) unsigned NOT NULL COMMENT '创建时间',\n\
+      \x20 `updated` int(11) unsigned NOT NULL COMMENT '更新时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_itemName` (`itemName`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;\n\n\n\
+      # Dump of table IMGroup\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMGroup`;\n\n\
+      CREATE TABLE `IMGroup` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `name` varchar(256) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '群名称',\n\
+      \x20 `avatar` varchar(256) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '群头像',\n\
+      \x20 `creator` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建者用户id',\n\
+      \x20 `type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '群组类型，1-固定;2-临时群',\n\
+      \x20 `userCnt` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '成员人数',\n\
+      \x20 `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '是否删除,0-正常，1-删除',\n\
+      \x20 `version` int(11) unsigned NOT NULL DEFAULT '1' COMMENT '群版本号',\n\
+      \x20 `lastChated` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '最后聊天时间',\n\
+      \x20 `updated` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_name` (`name`(191)),\n\
+      \x20 KEY `idx_creator` (`creator`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='IM群信息';\n\n\n\
+      # Dump of table IMGroupMember\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMGroupMember`;\n\n\
+      CREATE TABLE `IMGroupMember` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `groupId` int(11) unsigned NOT NULL COMMENT '群Id',\n\
+      \x20 `userId` int(11) unsigned NOT NULL COMMENT '用户id',\n\
+      \x20 `status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '是否退出群，0-正常，1-已退出',\n\
+      \x20 `created` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',\n\
+      \x20 `updated` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_groupId_userId_status` (`groupId`,`userId`,`status`),\n\
+      \x20 KEY `idx_userId_status_updated` (`userId`,`status`,`updated`),\n\
+      \x20 KEY `idx_groupId_updated` (`groupId`,`updated`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户和群的关系表';\n\n\n\
+      # Dump of table IMGroupMessage_0\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMGroupMessage_0`;\n\n\
+      CREATE TABLE `IMGroupMessage_0` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `groupId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `userId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(3) unsigned NOT NULL DEFAULT '2' COMMENT '群消息类型,101为群语音,2为文本',\n\
+      \x20 `status` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '消息状态',\n\
+      \x20 `updated` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_groupId_status_created` (`groupId`,`status`,`created`),\n\
+      \x20 KEY `idx_groupId_msgId_status_created` (`groupId`,`msgId`,`status`,`created`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='IM群消息表';\n\n\n\n\
+      # Dump of table IMGroupMessage_1\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMGroupMessage_1`;\n\n\
+      CREATE TABLE `IMGroupMessage_1` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `groupId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `userId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(3) unsigned NOT NULL DEFAULT '2' COMMENT '群消息类型,101为群语音,2为文本',\n\
+      \x20 `status` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '消息状态',\n\
+      \x20 `updated` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_groupId_status_created` (`groupId`,`status`,`created`),\n\
+      \x20 KEY `idx_groupId_msgId_status_created` (`groupId`,`msgId`,`status`,`created`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='IM群消息表';\n\n\n\
+      # Dump of table IMGroupMessage_2\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMGroupMessage_2`;\n\n\
+      CREATE TABLE `IMGroupMessage_2` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `groupId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `userId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(3) unsigned NOT NULL DEFAULT '2' COMMENT '群消息类型,101为群语音,2为文本',\n\
+      \x20 `status` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '消息状态',\n\
+      \x20 `updated` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_groupId_status_created` (`groupId`,`status`,`created`),\n\
+      \x20 KEY `idx_groupId_msgId_status_created` (`groupId`,`msgId`,`status`,`created`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='IM群消息表';\n\n\n\
+      # Dump of table IMGroupMessage_3\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMGroupMessage_3`;\n\n\
+      CREATE TABLE `IMGroupMessage_3` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `groupId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `userId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(3) unsigned NOT NULL DEFAULT '2' COMMENT '群消息类型,101为群语音,2为文本',\n\
+      \x20 `status` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '消息状态',\n\
+      \x20 `updated` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_groupId_status_created` (`groupId`,`status`,`created`),\n\
+      \x20 KEY `idx_groupId_msgId_status_created` (`groupId`,`msgId`,`status`,`created`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='IM群消息表';\n\n\n\
+      # Dump of table IMGroupMessage_4\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMGroupMessage_4`;\n\n\
+      CREATE TABLE `IMGroupMessage_4` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `groupId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `userId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(3) unsigned NOT NULL DEFAULT '2' COMMENT '群消息类型,101为群语音,2为文本',\n\
+      \x20 `status` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '消息状态',\n\
+      \x20 `updated` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_groupId_status_created` (`groupId`,`status`,`created`),\n\
+      \x20 KEY `idx_groupId_msgId_status_created` (`groupId`,`msgId`,`status`,`created`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='IM群消息表';\n\n\n\
+      # Dump of table IMGroupMessage_5\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMGroupMessage_5`;\n\n\
+      CREATE TABLE `IMGroupMessage_5` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `groupId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `userId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(3) unsigned NOT NULL DEFAULT '2' COMMENT '群消息类型,101为群语音,2为文本',\n\
+      \x20 `status` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '消息状态',\n\
+      \x20 `updated` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_groupId_status_created` (`groupId`,`status`,`created`),\n\
+      \x20 KEY `idx_groupId_msgId_status_created` (`groupId`,`msgId`,`status`,`created`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='IM群消息表';\n\n\n\
+      # Dump of table IMGroupMessage_6\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMGroupMessage_6`;\n\n\
+      CREATE TABLE `IMGroupMessage_6` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `groupId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `userId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(3) unsigned NOT NULL DEFAULT '2' COMMENT '群消息类型,101为群语音,2为文本',\n\
+      \x20 `status` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '消息状态',\n\
+      \x20 `updated` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_groupId_status_created` (`groupId`,`status`,`created`),\n\
+      \x20 KEY `idx_groupId_msgId_status_created` (`groupId`,`msgId`,`status`,`created`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='IM群消息表';\n\n\n\n\
+      # Dump of table IMGroupMessage_7\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMGroupMessage_7`;\n\n\
+      CREATE TABLE `IMGroupMessage_7` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `groupId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `userId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(3) unsigned NOT NULL DEFAULT '2' COMMENT '群消息类型,101为群语音,2为文本',\n\
+      \x20 `status` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '消息状态',\n\
+      \x20 `updated` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_groupId_status_created` (`groupId`,`status`,`created`),\n\
+      \x20 KEY `idx_groupId_msgId_status_created` (`groupId`,`msgId`,`status`,`created`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='IM群消息表';\n\n\n\n\
+      # Dump of table IMMessage_0\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMMessage_0`;\n\n\
+      CREATE TABLE `IMMessage_0` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `relateId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `fromId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `toId` int(11) unsigned NOT NULL COMMENT '接收用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '消息类型',\n\
+      \x20 `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0正常 1被删除',\n\
+      \x20 `updated` int(11) unsigned NOT NULL COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_relateId_status_created` (`relateId`,`status`,`created`),\n\
+      \x20 KEY `idx_relateId_status_msgId_created` (`relateId`,`status`,`msgId`,`created`),\n\
+      \x20 KEY `idx_fromId_toId_created` (`fromId`,`toId`,`status`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;\n\n\n\
+      # Dump of table IMMessage_1\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMMessage_1`;\n\n\
+      CREATE TABLE `IMMessage_1` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `relateId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `fromId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `toId` int(11) unsigned NOT NULL COMMENT '接收用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '消息类型',\n\
+      \x20 `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0正常 1被删除',\n\
+      \x20 `updated` int(11) unsigned NOT NULL COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_relateId_status_created` (`relateId`,`status`,`created`),\n\
+      \x20 KEY `idx_relateId_status_msgId_created` (`relateId`,`status`,`msgId`,`created`),\n\
+      \x20 KEY `idx_fromId_toId_created` (`fromId`,`toId`,`status`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;\n\n\n\n\
+      # Dump of table IMMessage_2\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMMessage_2`;\n\n\
+      CREATE TABLE `IMMessage_2` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `relateId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `fromId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `toId` int(11) unsigned NOT NULL COMMENT '接收用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '消息类型',\n\
+      \x20 `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0正常 1被删除',\n\
+      \x20 `updated` int(11) unsigned NOT NULL COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_relateId_status_created` (`relateId`,`status`,`created`),\n\
+      \x20 KEY `idx_relateId_status_msgId_created` (`relateId`,`status`,`msgId`,`created`),\n\
+      \x20 KEY `idx_fromId_toId_created` (`fromId`,`toId`,`status`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;\n\n\n\
+      # Dump of table IMMessage_3\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMMessage_3`;\n\n\
+      CREATE TABLE `IMMessage_3` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `relateId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `fromId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `toId` int(11) unsigned NOT NULL COMMENT '接收用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '消息类型',\n\
+      \x20 `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0正常 1被删除',\n\
+      \x20 `updated` int(11) unsigned NOT NULL COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_relateId_status_created` (`relateId`,`status`,`created`),\n\
+      \x20 KEY `idx_relateId_status_msgId_created` (`relateId`,`status`,`msgId`,`created`),\n\
+      \x20 KEY `idx_fromId_toId_created` (`fromId`,`toId`,`status`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;\n\n\
+      # Dump of table IMMessage_4\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMMessage_4`;\n\n\
+      CREATE TABLE `IMMessage_4` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `relateId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `fromId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `toId` int(11) unsigned NOT NULL COMMENT '接收用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '消息类型',\n\
+      \x20 `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0正常 1被删除',\n\
+      \x20 `updated` int(11) unsigned NOT NULL COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_relateId_status_created` (`relateId`,`status`,`created`),\n\
+      \x20 KEY `idx_relateId_status_msgId_created` (`relateId`,`status`,`msgId`,`created`),\n\
+      \x20 KEY `idx_fromId_toId_created` (`fromId`,`toId`,`status`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;\n\n\n\
+      # Dump of table IMMessage_5\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMMessage_5`;\n\n\
+      CREATE TABLE `IMMessage_5` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `relateId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `fromId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `toId` int(11) unsigned NOT NULL COMMENT '接收用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '消息类型',\n\
+      \x20 `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0正常 1被删除',\n\
+      \x20 `updated` int(11) unsigned NOT NULL COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_relateId_status_created` (`relateId`,`status`,`created`),\n\
+      \x20 KEY `idx_relateId_status_msgId_created` (`relateId`,`status`,`msgId`,`created`),\n\
+      \x20 KEY `idx_fromId_toId_created` (`fromId`,`toId`,`status`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;\n\n\
+      # Dump of table IMMessage_6\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMMessage_6`;\n\n\
+      CREATE TABLE `IMMessage_6` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `relateId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `fromId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `toId` int(11) unsigned NOT NULL COMMENT '接收用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '消息类型',\n\
+      \x20 `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0正常 1被删除',\n\
+      \x20 `updated` int(11) unsigned NOT NULL COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_relateId_status_created` (`relateId`,`status`,`created`),\n\
+      \x20 KEY `idx_relateId_status_msgId_created` (`relateId`,`status`,`msgId`,`created`),\n\
+      \x20 KEY `idx_fromId_toId_created` (`fromId`,`toId`,`status`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;\n\n\
+      # Dump of table IMMessage_7\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMMessage_7`;\n\n\
+      CREATE TABLE `IMMessage_7` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `relateId` int(11) unsigned NOT NULL COMMENT '用户的关系id',\n\
+      \x20 `fromId` int(11) unsigned NOT NULL COMMENT '发送用户的id',\n\
+      \x20 `toId` int(11) unsigned NOT NULL COMMENT '接收用户的id',\n\
+      \x20 `msgId` int(11) unsigned NOT NULL COMMENT '消息ID',\n\
+      \x20 `content` varchar(4096) COLLATE utf8mb4_bin DEFAULT '' COMMENT '消息内容',\n\
+      \x20 `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '消息类型',\n\
+      \x20 `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0正常 1被删除',\n\
+      \x20 `updated` int(11) unsigned NOT NULL COMMENT '更新时间',\n\
+      \x20 `created` int(11) unsigned NOT NULL COMMENT '创建时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_relateId_status_created` (`relateId`,`status`,`created`),\n\
+      \x20 KEY `idx_relateId_status_msgId_created` (`relateId`,`status`,`msgId`,`created`),\n\
+      \x20 KEY `idx_fromId_toId_created` (`fromId`,`toId`,`status`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;\n\n\
+      # Dump of table IMRecentSession\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMRecentSession`;\n\n\
+      CREATE TABLE `IMRecentSession` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `userId` int(11) unsigned NOT NULL COMMENT '用户id',\n\
+      \x20 `peerId` int(11) unsigned NOT NULL COMMENT '对方id',\n\
+      \x20 `type` tinyint(1) unsigned DEFAULT '0' COMMENT '类型，1-用户,2-群组',\n\
+      \x20 `status` tinyint(1) unsigned DEFAULT '0' COMMENT '用户:0-正常, 1-用户A删除,群组:0-正常, 1-被删除',\n\
+      \x20 `created` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',\n\
+      \x20 `updated` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_userId_peerId_status_updated` (`userId`,`peerId`,`status`,`updated`),\n\
+      \x20 KEY `idx_userId_peerId_type` (`userId`,`peerId`,`type`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8;\n\n\n\
+      # Dump of table IMRelationShip\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMRelationShip`;\n\n\
+      CREATE TABLE `IMRelationShip` (\n\
+      \x20 `id` int(11) NOT NULL AUTO_INCREMENT,\n\
+      \x20 `smallId` int(11) unsigned NOT NULL COMMENT '用户A的id',\n\
+      \x20 `bigId` int(11) unsigned NOT NULL COMMENT '用户B的id',\n\
+      \x20 `status` tinyint(1) unsigned DEFAULT '0' COMMENT '用户:0-正常, 1-用户A删除,群组:0-正常, 1-被删除',\n\
+      \x20 `created` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',\n\
+      \x20 `updated` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_smallId_bigId_status_updated` (`smallId`,`bigId`,`status`,`updated`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8;\n\n\n\
+      # Dump of table IMUser\n\
+      # ------------------------------------------------------------\n\n\
+      DROP TABLE IF EXISTS `IMUser`;\n\n\
+      CREATE TABLE `IMUser` (\n\
+      \x20 `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',\n\
+      \x20 `sex` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '1男2女0未知',\n\
+      \x20 `name` varchar(32) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '用户名',\n\
+      \x20 `domain` varchar(32) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '拼音',\n\
+      \x20 `nick` varchar(32) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '花名,绰号等',\n\
+      \x20 `password` varchar(32) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '密码',\n\
+      \x20 `salt` varchar(4) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '混淆码',\n\
+      \x20 `phone` varchar(11) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '手机号码',\n\
+      \x20 `email` varchar(64) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT 'email',\n\
+      \x20 `avatar` varchar(255) COLLATE utf8mb4_bin DEFAULT '' COMMENT '自定义用户头像',\n\
+      \x20 `departId` int(11) unsigned NOT NULL COMMENT '所属部门Id',\n\
+      \x20 `status` tinyint(2) unsigned DEFAULT '0' COMMENT '1. 试用期 2. 正式 3. 离职 4.实习',\n\
+      \x20 `created` int(11) unsigned NOT NULL COMMENT '创建时间',\n\
+      \x20 `updated` int(11) unsigned NOT NULL COMMENT '更新时间',\n\
+      \x20 `push_shield_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0关闭勿扰 1开启勿扰',\n\
+      \x20 `sign_info` varchar(128) COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '个性签名',\n\
+      \x20 PRIMARY KEY (`id`),\n\
+      \x20 KEY `idx_domain` (`domain`),\n\
+      \x20 KEY `idx_name` (`name`),\n\
+      \x20 KEY `idx_phone` (`phone`)\n\
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;\n\n"
+

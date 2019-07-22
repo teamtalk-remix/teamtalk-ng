@@ -36,11 +36,17 @@ spec:
       containers:
       - name: mariadb
         image: docker.io/centos/mariadb-102-centos7:latest
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "sleep 60; scl enable rh-mariadb102 'mysql -u root teamtalk' < /var/lib/mysql/ttopen.sql"]
         envFrom:
           - secretRef:
               name: teamtalk-ng-db
           - configMapRef:
               name: teamtalk-ng-db
+          - configMapRef:
+              name: teamtalk-ng-db-ttopen
         resources:
           limits:
             memory: "512Mi"
@@ -51,7 +57,13 @@ spec:
         volumeMounts:
         - name: teamtalk-ng-db-data
           mountPath: /var/lib/mysql/data
+        - name: teamtalk-ng-db-ttopen
+          mountPath: /var/lib/mysql/ttopen.sql
+          subPath: ttopen.sql
       volumes:
       - name: teamtalk-ng-db-data
         persistentVolumeClaim:
           claimName: teamtalk-ng-db-data
+      - name: teamtalk-ng-db-ttopen
+        configMap:
+          name: teamtalk-ng-db-ttopen

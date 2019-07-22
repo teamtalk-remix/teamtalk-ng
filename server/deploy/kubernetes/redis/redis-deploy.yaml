@@ -41,8 +41,8 @@ spec:
               name: teamtalk-ng-redis
         resources:
           limits:
-            memory: "512Mi"
-            cpu: "500m"
+            memory: "256Mi"
+            cpu: "200m"
         ports:
         - containerPort: 6379
           name: redis
