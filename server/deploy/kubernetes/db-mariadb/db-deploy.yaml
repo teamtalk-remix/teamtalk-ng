@@ -31,16 +31,18 @@ spec:
         component: db
     spec:
       securityContext:
-        runAsNonRoot: true
+        runAsNonRoot: false
         fsGroup: 0
       containers:
       - name: mariadb
-        image: docker.io/centos/mariadb-102-centos7:latest
+        image: mariadb
         envFrom:
           - secretRef:
               name: teamtalk-ng-db
           - configMapRef:
               name: teamtalk-ng-db
+          - configMapRef:
+              name: teamtalk-ng-db-ttopen
         resources:
           limits:
             memory: "512Mi"
@@ -50,8 +52,14 @@ spec:
           name: mysql
         volumeMounts:
         - name: teamtalk-ng-db-data
-          mountPath: /var/lib/mysql/data
+          mountPath: /var/lib/mysql
+        - name: teamtalk-ng-db-ttopen
+          mountPath: /docker-entrypoint-initdb.d/ttopen.sql
+          subPath: ttopen.sql
       volumes:
       - name: teamtalk-ng-db-data
         persistentVolumeClaim:
           claimName: teamtalk-ng-db-data
+      - name: teamtalk-ng-db-ttopen
+        configMap:
+          name: teamtalk-ng-db-ttopen
