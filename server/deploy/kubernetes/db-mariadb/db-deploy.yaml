@@ -41,8 +41,6 @@ spec:
               name: teamtalk-ng-db
           - configMapRef:
               name: teamtalk-ng-db
-          - configMapRef:
-              name: teamtalk-ng-db-ttopen
         resources:
           limits:
             memory: "512Mi"

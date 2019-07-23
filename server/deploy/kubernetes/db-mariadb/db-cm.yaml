@@ -22,3 +22,4 @@ metadata:
 data:
   MYSQL_USER: teamtalk
   MYSQL_DATABASE: teamtalk
+  MYSQL_ROOT_RANDOM_PASSWORD: "yes"
