@@ -39,8 +39,11 @@ spec:
         - http_msg_server
         workingDir: /var/local/teamtalk-ng
         resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
           limits:
-            memory: "512Mi"
+            memory: "128Mi"
             cpu: "500m"
         ports:
         - containerPort: 8400
