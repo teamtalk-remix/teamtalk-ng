@@ -15,3 +15,4 @@ RUN chmod +x /usr/local/bin/run-httpd.sh \
 CMD ["/usr/local/bin/run-httpd.sh"]
 EXPOSE 8080
 WORKDIR /var/www/html
+USER 1000

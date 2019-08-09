@@ -33,3 +33,4 @@ RUN yum -y --setopt=skip_missing_names_on_install=0 install less \
 COPY --from=builder /opt/teamtalk/ /opt/teamtalk/
 WORKDIR /opt/teamtalk/
 ENV PATH=/opt/teamtalk/bin:$PATH
+USER 1000
