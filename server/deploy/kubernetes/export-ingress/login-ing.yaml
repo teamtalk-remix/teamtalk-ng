@@ -20,6 +20,9 @@ metadata:
     app: teamtalk-ng
     component: login
 spec:
+  tls:
+  - hosts:
+    - teamtalk-ng-login
   rules:
   - host: teamtalk-ng-login
     http:
