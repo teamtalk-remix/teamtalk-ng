@@ -29,7 +29,7 @@ kubectl apply -f ./http-msg
 kubectl apply -f ./msfs
 kubectl apply -f ./file
 kubectl apply -f ./dashboard
-``
+```
 
 3. Expose your services with Ingress or LoadBalancer:
 
