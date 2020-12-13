@@ -34,7 +34,7 @@ spec:
         runAsNonRoot: true
       containers:
       - name: login
-        image: docker.io/rayson/teamtalk-ng:latest
+        image: docker.io/teamtalkng/teamtalk-ng:latest
         args:
         - login_server
         workingDir: /var/local/teamtalk-ng

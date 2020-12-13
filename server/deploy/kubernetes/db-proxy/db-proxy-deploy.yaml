@@ -34,7 +34,7 @@ spec:
         runAsNonRoot: true
       containers:
       - name: db-proxy
-        image: docker.io/rayson/teamtalk-ng:latest
+        image: docker.io/teamtalkng/teamtalk-ng:latest
         args:
         - db_proxy_server
         workingDir: /var/local/teamtalk-ng

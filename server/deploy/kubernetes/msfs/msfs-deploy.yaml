@@ -35,7 +35,7 @@ spec:
         fsGroup: 0
       containers:
       - name: msfs
-        image: docker.io/rayson/teamtalk-ng:latest
+        image: docker.io/teamtalkng/teamtalk-ng:latest
         args:
         - msfs
         workingDir: /var/local/teamtalk-ng

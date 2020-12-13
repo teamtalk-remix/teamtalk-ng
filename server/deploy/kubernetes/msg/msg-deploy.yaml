@@ -34,7 +34,7 @@ spec:
         runAsNonRoot: true
       containers:
       - name: msg
-        image: docker.io/rayson/teamtalk-ng:latest
+        image: docker.io/teamtalkng/teamtalk-ng:latest
         args:
         - msg_server
         workingDir: /var/local/teamtalk-ng

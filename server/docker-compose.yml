@@ -14,8 +14,8 @@
 
 version: "2.2"
 x-global-values:
-  teamtalk-image: &teamtalk-image ${TTN_IMAGE_PREFIX:-docker.io/rayson/}teamtalk-ng:latest
-  teamtalk-dashboard-image: &teamtalk-dashboard-image ${TTN_IMAGE_PREFIX:-docker.io/rayson/}teamtalk-ng-dashboard:latest
+  teamtalk-image: &teamtalk-image ${TTN_IMAGE_PREFIX:-docker.io/teamtalkng/}teamtalk-ng:latest
+  teamtalk-dashboard-image: &teamtalk-dashboard-image ${TTN_IMAGE_PREFIX:-docker.io/teamtalkng/}teamtalk-ng-dashboard:latest
 x-teamtalk-service-template: &teamtalk-service-template
   image: *teamtalk-image
   build:
