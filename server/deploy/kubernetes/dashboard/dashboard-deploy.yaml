@@ -35,7 +35,7 @@ spec:
         fsGroup: 0
       containers:
       - name: dashboard
-        image: docker.io/rayson/teamtalk-ng-dashboard:latest
+        image: docker.io/teamtalkng/teamtalk-ng-dashboard:latest
         resources:
           requests:
             memory: "64Mi"
