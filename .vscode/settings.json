@@ -68,5 +68,10 @@
       "end": "*/",
       "blankLinesAfter": 1
     }
-  ]
+  ],
+  "files.associations": {
+    "utility": "cpp",
+    "hash_map": "cpp",
+    "new": "cpp"
+  }
 }
