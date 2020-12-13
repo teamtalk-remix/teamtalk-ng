@@ -56,7 +56,7 @@ You have multiple options to deploy the TeamTalk-NG server.
 
 ### Run containerized TeamTalk-NG server on a single host
 
-Make sure you have [Docker][] and [Docker Compose][] installed.
+Make sure you have [Docker][https://www.docker.com/get-started] and [Docker Compose][https://docs.docker.com/compose/install/] installed.
 
 - Take a look at the `docker-compose.yaml` file at the project root and configuration files of TeamTalk-NG services at `config/`, then customize anything you need.
 If you need to connect outside of your host, replace the IP addresses `127.0.0.1` in `loginserver.conf` and `msgserver.conf` with the IP address of your host.
